@@ -22,5 +22,8 @@ async function fetchPotterData(characterName){
 function displayPotterInfo(character){
     const {name, house, species, gender, ancestry, wand, patronus, image} = character;
 
-    potterInfoDiv.innerHTML
+    potterInfoDiv.innerHTML = `${image ? `img src='${image}' alt='${name}' ` : 'NO IMAGEN'} 
+    <h3>${name}</h3>
+    <p><strong>Casa:<strong>${house || 'Desconocida'} </p>
+    <p><strong>Patronus<strong>${patronus || 'Desconocido'} </p>
 }
