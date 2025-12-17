@@ -55,13 +55,12 @@ form {
 
 #potter-name {
     padding: 12px;
-
     font-family: 'Cinzel', serif;
     border-radius: 8px;
     border: 1px solid #334155;
     font-size: 16px;
     background-color: #1e293b;
-    color: #146cc5;
+    color: white;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 #potter-name::placeholder {
