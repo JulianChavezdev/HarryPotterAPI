@@ -1,29 +1,43 @@
 const form = document.getElementById('potter-form');
-const nameInput = document.getElementById('potter-name');
-const resultDiv = document.getElementById('potter-info');
+const input = document.getElementById('potter-name');
+const potterInfoDiv = document.getElementById('potter-info');
 
-async function fetchPotterData(characterName){
-    try{
-        const response = await fetch(`https://potterhead-api.vercel.app/api/characters${characterName.toLowerCase}`);
-
-        if(!response.ok){
-            throw new Error("personaje no encontrado");
+async function fetchPotterData(characterName){ 
+    try {
+        const response = await fetch(`https://potterhead-api.vercel.app/api/characters`);
+        if (!response.ok) {
+            throw new Error('Error al obtener los datos de Harry Potter');
         }
-
         const data = await response.json();
-        displayPotterInfo(data);
-    }
-    catch (error){
-        potterInfoDiv.innerHTML = `<p>${error.message}<p>`;
+
+        const character = data.find(p => p.name.toLowerCase().includes (characterName.toLowerCase()));
+
+        if (!character) {
+            throw new Error('Personaje no encontrado');
+        }
+        displayPotterInfo(character);
+
+    } catch (error) {
+        potterInfoDiv.innerHTML = `<p>${error.message}</p>`;
         potterInfoDiv.style.display = 'block';
     }
 }
 
 function displayPotterInfo(character){
-    const {name, house, species, gender, ancestry, wand, patronus, image} = character;
-
-    potterInfoDiv.innerHTML = `${image ? `img src='${image}' alt='${name}' ` : 'NO IMAGEN'} 
-    <h3>${name}</h3>
-    <p><strong>Casa:<strong>${house || 'Desconocida'} </p>
-    <p><strong>Patronus<strong>${patronus || 'Desconocido'} </p>
+    const { name, house, species, gender, ancestry, wand, patronus, image } = character;
+    potterInfoDiv.innerHTML = `
+        ${image ? `<img src='${image}' alt='${name}'>` : ''}
+        <h3>${name}</h3>
+        <p><strong>Casa:</strong> ${house || 'Desconocida'}</p>
+        <p><strong>Patronus:</strong> ${patronus || 'Desconocido'}</p>
+    `;
+    potterInfoDiv.style.display = 'block';
 }
+
+form.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const characterName = input.value.trim();
+    if (characterName) {
+        fetchPotterData(characterName);
+    }
+});
